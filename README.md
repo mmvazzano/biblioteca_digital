@@ -116,27 +116,6 @@ streamlit run app/main.py
 
 Esto abrirá la interfaz web de la biblioteca digital en tu navegador predeterminado.
 
-### Importar libros desde metadata.db
-
-Se puede poblar la base de datos de la app con los títulos y autores almacenados en `metadata.db` (por ejemplo, si se migra desde Calibre u otra fuente compatible). Para esto:
-
-1. Chequear de que el archivo `metadata.db` esté en la raíz del proyecto, es decir, en:
-
-   ```
-   biblioteca_digital/metadata.db
-   ```
-
-   (al mismo nivel que `biblioteca.db`)
-
-2. Ejecutar el siguiente script desde la carpeta `app`:
-   ```bash
-   cd biblioteca_digital/app
-   python importar_desde_metadata.py
-   ```
-   Esto extraerá los títulos y autores de `metadata.db` y los insertará en la base de datos de la aplicación.
-
-**Nota:** El script solo importa título y autor.
-
 ## Funcionalidades
 
 - Listado de libros con opciones de filtrado.
