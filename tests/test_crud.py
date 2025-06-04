@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'app')))
+
 import pytest
 from app.db import SessionLocal, engine
 from app.models import Base, Book
