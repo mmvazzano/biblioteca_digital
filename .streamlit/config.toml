@@ -1,0 +1,9 @@
+[general]
+email = "tu_email@ejemplo.com"
+# Ajustes de la interfaz
+theme = "dark"
+# Configuración de la página
+page_title = "Biblioteca Digital"
+page_icon = "📚"
+layout = "wide"
+initial_sidebar_state = "expanded"

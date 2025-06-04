@@ -1,0 +1,1 @@
+# Este archivo inicializa el paquete de la aplicación. No contiene código específico, pero permite que el directorio sea tratado como un módulo de Python.

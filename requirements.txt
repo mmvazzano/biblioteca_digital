@@ -1,0 +1,7 @@
+streamlit
+sqlalchemy
+pytesseract
+tensorflow
+pillow
+opencv-python
+pandas
