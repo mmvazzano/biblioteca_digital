@@ -7,6 +7,16 @@ import pandas as pd
 from app.crud import get_books, create_book
 from app.models import Book
 from app.db import SessionLocal
+import unicodedata
+from rapidfuzz import fuzz
+
+def normalizar(texto):
+    if not texto:
+        return ""
+    texto = texto.lower()
+    texto = unicodedata.normalize('NFKD', texto)
+    texto = ''.join([c for c in texto if not unicodedata.combining(c)])
+    return texto
 
 def mostrar_libros(db):
     st.header("Listado de Libros")
@@ -40,20 +50,36 @@ def buscar_libros(db):
     autor = st.text_input("Buscar por autor")
     genero = st.text_input("Buscar por género")
     query = db.query(Book)
-    if titulo:
-        query = query.filter(Book.title.ilike(f"%{titulo}%"))
-    if autor:
-        query = query.filter(Book.author.ilike(f"%{autor}%"))
-    if genero:
-        query = query.filter(Book.genre.ilike(f"%{genero}%"))
     resultados = query.all()
-    if resultados:
+
+    # Normaliza los campos de búsqueda
+    titulo_norm = normalizar(titulo)
+    autor_norm = normalizar(autor)
+    genero_norm = normalizar(genero)
+
+    # Filtra resultados con búsqueda flexible
+    libros_filtrados = []
+    for book in resultados:
+        coincide = True
+        if titulo_norm:
+            if fuzz.partial_ratio(normalizar(book.title), titulo_norm) < 80:
+                coincide = False
+        if autor_norm:
+            if fuzz.partial_ratio(normalizar(book.author), autor_norm) < 80:
+                coincide = False
+        if genero_norm:
+            if fuzz.partial_ratio(normalizar(book.genre), genero_norm) < 80:
+                coincide = False
+        if coincide:
+            libros_filtrados.append(book)
+
+    if libros_filtrados:
         df = pd.DataFrame([{
             "Título": book.title,
             "Autor": book.author,
             "Año": book.year,
             "Género": book.genre
-        } for book in resultados])
+        } for book in libros_filtrados])
         st.dataframe(df, use_container_width=True)
     else:
         st.info("No se encontraron libros con esos criterios.")
